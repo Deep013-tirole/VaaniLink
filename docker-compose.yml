@@ -1,0 +1,108 @@
+# ==========================================
+# VaaniLink Production Docker Compose
+# Services: PostgreSQL, Redis, ASGI Backend,
+#           Celery Worker, Frontend Nginx Proxy
+# ==========================================
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    container_name: vaanilink_db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-vaanilink}
+      POSTGRES_USER: ${POSTGRES_USER:-vaanilink}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-vaanilink_secure_password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-vaanilink} -d ${POSTGRES_DB:-vaanilink}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    container_name: vaanilink_redis
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    container_name: vaanilink_backend
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.production
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-insecure-prod-key-please-replace-in-env}
+      DATABASE_URL: postgres://${POSTGRES_USER:-vaanilink}:${POSTGRES_PASSWORD:-vaanilink_secure_password}@db:5432/${POSTGRES_DB:-vaanilink}
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/1
+      CELERY_RESULT_BACKEND: redis://redis:6379/2
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,backend}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost,http://localhost:80,http://127.0.0.1}
+      CSRF_TRUSTED_ORIGINS: ${CSRF_TRUSTED_ORIGINS:-http://localhost,http://localhost:80,http://127.0.0.1}
+      SECURE_SSL_REDIRECT: ${SECURE_SSL_REDIRECT:-False}
+      TRANSLATION_ENGINE: ${TRANSLATION_ENGINE:-hybrid}
+      TRANSLATION_API_KEY: ${TRANSLATION_API_KEY:-}
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    expose:
+      - "8000"
+
+  celery_worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    container_name: vaanilink_celery
+    command: ["celery", "-A", "config", "worker", "--loglevel=info", "--concurrency=4"]
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      backend:
+        condition: service_started
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.production
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-insecure-prod-key-please-replace-in-env}
+      DATABASE_URL: postgres://${POSTGRES_USER:-vaanilink}:${POSTGRES_PASSWORD:-vaanilink_secure_password}@db:5432/${POSTGRES_DB:-vaanilink}
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/1
+      CELERY_RESULT_BACKEND: redis://redis:6379/2
+      TRANSLATION_ENGINE: ${TRANSLATION_ENGINE:-hybrid}
+      TRANSLATION_API_KEY: ${TRANSLATION_API_KEY:-}
+    volumes:
+      - media_volume:/app/media
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    container_name: vaanilink_frontend
+    ports:
+      - "${PORT:-80}:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+  redis_data:
+  static_volume:
+  media_volume:

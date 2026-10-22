@@ -1,0 +1,603 @@
+.timelineContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  overflow-y: auto;
+  flex: 1;
+  background-color: var(--color-bg-base);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  min-height: 320px;
+}
+
+.emptyTimeline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
+
+.messageRow {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.rowOutgoing {
+  justify-content: flex-end;
+}
+
+.rowIncoming {
+  justify-content: flex-start;
+}
+
+.bubble {
+  max-width: 70%;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  box-shadow: var(--shadow-sm);
+  word-break: break-word;
+}
+
+.bubbleOutgoing {
+  background-color: var(--color-bubble-outgoing);
+  color: var(--color-bubble-outgoing-text);
+  border-bottom-right-radius: 2px;
+}
+
+.bubbleIncoming {
+  background-color: var(--color-bubble-incoming);
+  color: var(--color-bubble-incoming-text);
+  border: 1px solid var(--color-border);
+  border-bottom-left-radius: 2px;
+}
+
+.senderName {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.messageText {
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-1);
+  font-size: 0.6875rem;
+  margin-top: 2px;
+}
+
+.metaOutgoing {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.metaIncoming {
+  color: var(--color-text-muted);
+}
+
+.statusIndicator {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 700;
+}
+
+.statusSeen {
+  color: #38bdf8 !important;
+}
+
+.typingIndicatorRow {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: var(--space-2) var(--space-3);
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-radius: var(--radius-md);
+  align-self: flex-start;
+  margin-top: 0.25rem;
+}
+
+.typingDots span {
+  animation: blink 1.4s infinite both;
+  font-weight: 700;
+}
+
+.typingDots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typingDots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0%, 80%, 100% {
+    opacity: 0.2;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+.nlpBadgeRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+  flex-wrap: wrap;
+}
+
+.nlpPill {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.nlpPillIncoming {
+  background-color: #e2e8f0;
+  color: #475569;
+}
+
+.nlpPillOutgoing {
+  background-color: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+}
+
+.nlpPillMixed {
+  background-color: #fef3c7 !important;
+  color: #b45309 !important;
+}
+
+.transliterationHint {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+  margin-top: 2px;
+}
+
+/* Phase 6: Translation Display & Show Original Styles */
+.translationBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.08);
+  font-size: 0.6875rem;
+}
+
+.translationBannerOutgoing {
+  border-top-color: rgba(255, 255, 255, 0.2);
+}
+
+.translationLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.translationToggleBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: opacity var(--transition-fast);
+  color: inherit;
+  opacity: 0.85;
+}
+
+.translationToggleBtn:hover {
+  opacity: 1;
+}
+
+.translationFeedbackGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 4px;
+}
+
+.translationFeedbackBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 1px 3px;
+  font-size: 0.6875rem;
+  border-radius: var(--radius-sm);
+  opacity: 0.6;
+  transition: all var(--transition-fast);
+}
+
+.translationFeedbackBtn:hover {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.translationFeedbackActive {
+  opacity: 1;
+  font-weight: 700;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.retryTranslationBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--color-danger);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Message Info Action & Modal Styles (Phase 7) */
+.infoBtn {
+  background: none;
+  border: none;
+  padding: 0 3px;
+  font-size: 0.6875rem;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity var(--transition-fast);
+  color: inherit;
+  border-radius: var(--radius-sm);
+}
+
+.infoBtn:hover {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+  padding: var(--space-4);
+}
+
+.modalContainer {
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 480px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+  animation: modalEnter 0.15s ease-out;
+}
+
+@keyframes modalEnter {
+  from {
+    transform: scale(0.96);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.modalTitle {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+.modalCloseBtn {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  line-height: 1;
+  padding: var(--space-1);
+}
+
+.modalCloseBtn:hover {
+  color: var(--color-text-main);
+}
+
+.modalBody {
+  padding: var(--space-4);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.messageInfoSnippet {
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  font-size: 0.875rem;
+}
+
+.messageInfoSnippetLabel {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-1);
+}
+
+.receiptStatsRow {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.receiptStatCard {
+  flex: 1;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  text-align: center;
+}
+
+.receiptStatNum {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+.receiptStatLabel {
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.receiptSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.receiptSectionTitle {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.receiptList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.receiptItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  font-size: 0.8125rem;
+}
+
+.receiptUser {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.receiptTime {
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+}
+
+.receiptStatusPill {
+  font-size: 0.625rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+}
+
+.pillSeen {
+  background-color: rgba(34, 197, 94, 0.15);
+  color: #16a34a;
+}
+
+.pillDelivered {
+  background-color: rgba(59, 130, 246, 0.15);
+  color: #2563eb;
+}
+
+.pillPending {
+  background-color: rgba(148, 163, 184, 0.2);
+  color: #64748b;
+}
+
+/* Phase 9 Chat UX Styles */
+
+.messageWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 75%;
+}
+
+.rowOutgoing .messageWrapper {
+  justify-content: flex-end;
+}
+
+.rowIncoming .messageWrapper {
+  justify-content: flex-start;
+}
+
+.messageActions {
+  display: none;
+  align-items: center;
+  gap: 2px;
+  background-color: var(--color-bg-surface, #ffffff);
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-radius: var(--radius-full, 9999px);
+  padding: 2px 4px;
+  box-shadow: var(--shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.05));
+  position: absolute;
+  top: -12px;
+  z-index: 10;
+}
+
+.rowOutgoing .messageActions {
+  right: 8px;
+}
+
+.rowIncoming .messageActions {
+  left: 8px;
+}
+
+.messageRow:hover .messageActions,
+.messageRow:focus-within .messageActions {
+  display: flex;
+}
+
+.actionBtn {
+  background: transparent;
+  border: none;
+  font-size: 0.8125rem;
+  padding: 2px 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--color-text-secondary, #475569);
+  transition: background-color 0.1s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.actionBtn:hover {
+  background-color: var(--color-surface-hover, #f1f5f9);
+  transform: scale(1.15);
+}
+
+.actionBtnDelete:hover {
+  color: var(--color-danger, #ef4444);
+}
+
+/* Quoted Reply Box */
+.replyQuoteBox {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 4px 8px;
+  border-left: 3px solid var(--color-primary, #2563eb);
+  background-color: rgba(0, 0, 0, 0.04);
+  border-radius: 4px;
+  margin-bottom: 4px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+  text-align: left;
+}
+
+.bubbleOutgoing .replyQuoteBox {
+  border-left-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.replyQuoteBox:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.bubbleOutgoing .replyQuoteBox:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.replySender {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--color-primary, #2563eb);
+}
+
+.bubbleOutgoing .replySender {
+  color: #ffffff;
+}
+
+.replySnippet {
+  font-size: 0.75rem;
+  opacity: 0.9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 260px;
+}
+
+/* Edited Indicator */
+.editedIndicator {
+  font-size: 0.625rem;
+  opacity: 0.75;
+  font-style: italic;
+  margin-right: 2px;
+}
+
+/* Deleted Message Bubble */
+.bubbleDeleted {
+  background-color: var(--color-surface-secondary, #f1f5f9) !important;
+  color: var(--color-text-muted, #64748b) !important;
+  border: 1px dashed var(--color-border, #cbd5e1) !important;
+  font-style: italic;
+}
+
+.deletedText {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-text-muted, #64748b);
+  font-size: 0.875rem;
+}
+
+/* RTL Typography & Direction */
+.rtlText {
+  direction: rtl;
+  text-align: right;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, Arial, sans-serif;
+}
+

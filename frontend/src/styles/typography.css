@@ -1,0 +1,40 @@
+/* Typography System */
+
+body {
+  font-family: var(--font-family-base);
+  font-size: 0.9375rem; /* 15px */
+  color: var(--color-text-main);
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-text-main);
+}
+
+h1 {
+  font-size: 1.75rem;
+}
+
+h2 {
+  font-size: 1.375rem;
+}
+
+h3 {
+  font-size: 1.125rem;
+}
+
+p {
+  margin-bottom: var(--space-2);
+}
+
+small {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}

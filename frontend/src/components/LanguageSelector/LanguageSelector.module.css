@@ -1,0 +1,146 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  position: relative;
+  width: 100%;
+}
+
+.label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-text-main);
+}
+
+.selectTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-main);
+  font-size: 0.9375rem;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  text-align: left;
+  width: 100%;
+}
+
+.selectTrigger:focus-visible,
+.selectTrigger:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-focus);
+  outline: none;
+}
+
+.triggerText {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.primaryName {
+  font-weight: 500;
+}
+
+.nativeName {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.rtlBadge {
+  font-size: 0.6875rem;
+  padding: 1px 4px;
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: var(--space-1);
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  max-height: 280px;
+  overflow-y: auto;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+}
+
+.searchBox {
+  padding: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  background-color: var(--color-bg-surface);
+  z-index: 2;
+}
+
+.searchInput {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-bg-input);
+  font-size: 0.875rem;
+  outline: none;
+}
+
+.searchInput:focus {
+  border-color: var(--color-primary);
+  background-color: var(--color-bg-surface);
+}
+
+.optionsList {
+  display: flex;
+  flex-direction: column;
+}
+
+.optionItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-3);
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.optionItem:hover,
+.optionItemSelected {
+  background-color: var(--color-primary-light);
+}
+
+.optionContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.optionHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.optionSub {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.emptyState {
+  padding: var(--space-4);
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  text-align: center;
+}

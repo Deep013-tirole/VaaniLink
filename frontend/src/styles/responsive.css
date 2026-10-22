@@ -1,0 +1,20 @@
+/* Responsive Layout Breakpoints */
+
+/* Mobile view: < 768px */
+@media (max-width: 767px) {
+  :root {
+    --sidebar-width: 100%;
+    --header-height: 56px;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+}
+
+/* Tablet / Desktop view: >= 768px */
+@media (min-width: 768px) {
+  .mobile-only {
+    display: none !important;
+  }
+}
