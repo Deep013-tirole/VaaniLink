@@ -5,3 +5,4 @@ export * from "./ConversationList";
 export * from "./MessageTimeline";
 export * from "./MessageComposer";
 export * from "./EmojiPicker";
+export * from "./ErrorBoundary";

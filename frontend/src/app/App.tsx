@@ -99,10 +99,106 @@ const FALLBACK_LANGUAGES: Language[] = [
   { code: "fr", name: "French", native_name: "Français", script_code: "Latn", is_rtl: false, is_active: true, translation_enabled: true, detection_enabled: true, transliteration_enabled: false, sort_order: 21 },
 ];
 
+type TabType = "avatars" | "languages" | "auth" | "chat" | "groups" | "privacy" | "nlp" | "translation" | "chat_ux";
+
+function getInitialRoute(): { tab: TabType; authMode: "login" | "register" } {
+  if (typeof window === "undefined") {
+    return { tab: "chat", authMode: "register" };
+  }
+  const clean = window.location.pathname.toLowerCase().replace(/\/+$/, "");
+  switch (clean) {
+    case "/login":
+      return { tab: "auth", authMode: "login" };
+    case "/register":
+      return { tab: "auth", authMode: "register" };
+    case "/auth":
+      return { tab: "auth", authMode: "login" };
+    case "/groups":
+      return { tab: "groups", authMode: "register" };
+    case "/privacy":
+      return { tab: "privacy", authMode: "register" };
+    case "/settings":
+    case "/languages":
+      return { tab: "languages", authMode: "register" };
+    case "/nlp":
+      return { tab: "nlp", authMode: "register" };
+    case "/translation":
+      return { tab: "translation", authMode: "register" };
+    case "/chat_ux":
+    case "/ux":
+      return { tab: "chat_ux", authMode: "register" };
+    case "/avatars":
+      return { tab: "avatars", authMode: "register" };
+    case "/chats":
+    case "/chat":
+    case "":
+    case "/":
+    default:
+      return { tab: "chat", authMode: "register" };
+  }
+}
+
+function getPathForTab(tab: TabType, mode: "login" | "register"): string {
+  switch (tab) {
+    case "chat":
+      return "/chats";
+    case "auth":
+      return mode === "login" ? "/login" : "/register";
+    case "groups":
+      return "/groups";
+    case "privacy":
+      return "/privacy";
+    case "languages":
+      return "/settings";
+    case "nlp":
+      return "/nlp";
+    case "translation":
+      return "/translation";
+    case "chat_ux":
+      return "/chat_ux";
+    case "avatars":
+      return "/avatars";
+    default:
+      return "/chats";
+  }
+}
+
 export const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<
-    "avatars" | "languages" | "auth" | "chat" | "groups" | "privacy" | "nlp" | "translation" | "chat_ux"
-  >("chat");
+  const initialRoute = useRef(getInitialRoute()).current;
+  const [activeTab, setActiveTabState] = useState<TabType>(initialRoute.tab);
+  const [authMode, setAuthModeState] = useState<"login" | "register">(initialRoute.authMode);
+
+  const setActiveTab = useCallback((tab: TabType) => {
+    setActiveTabState(tab);
+    if (typeof window !== "undefined") {
+      const targetPath = getPathForTab(tab, authMode);
+      if (window.location.pathname !== targetPath) {
+        window.history.pushState(null, "", targetPath);
+      }
+    }
+  }, [authMode]);
+
+  const setAuthMode = useCallback((mode: "login" | "register") => {
+    setAuthModeState(mode);
+    if (typeof window !== "undefined" && activeTab === "auth") {
+      const targetPath = getPathForTab("auth", mode);
+      if (window.location.pathname !== targetPath) {
+        window.history.pushState(null, "", targetPath);
+      }
+    }
+  }, [activeTab]);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const route = getInitialRoute();
+      setActiveTabState(route.tab);
+      setAuthModeState(route.authMode);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
   const [languages, setLanguages] = useState<Language[]>(FALLBACK_LANGUAGES);
 
   // Avatar demo state
@@ -179,7 +275,6 @@ export const App: React.FC = () => {
 
   // Auth demo state
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [authMode, setAuthMode] = useState<"login" | "register">("register");
   const [username, setUsername] = useState("deepak_tirole");
   const [email, setEmail] = useState("deepak@example.com");
   const [displayName, setDisplayName] = useState("Deepak Tirole");

@@ -1,4 +1,5 @@
 import { WebSocketFrame } from "@/types";
+import { resolveWsBaseUrl } from "./index";
 
 export type ConnectionStatus = "DISCONNECTED" | "CONNECTING" | "CONNECTED" | "RECONNECTING";
 
@@ -47,8 +48,7 @@ export class WebSocketManager {
     this.intentionalClose = false;
     this.setStatus("CONNECTING");
 
-    const apiBase = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
-    const wsBase = apiBase.replace(/^http/, "ws");
+    const wsBase = resolveWsBaseUrl();
     const wsUrl = `${wsBase}/ws/chat/?token=${encodeURIComponent(token)}`;
 
     try {
